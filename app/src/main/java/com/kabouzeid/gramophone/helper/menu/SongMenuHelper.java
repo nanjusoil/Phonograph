@@ -1,9 +1,11 @@
 package com.kabouzeid.gramophone.helper.menu;
 
 import android.content.Intent;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
@@ -19,6 +21,11 @@ import com.kabouzeid.gramophone.ui.activities.tageditor.AbsTagEditorActivity;
 import com.kabouzeid.gramophone.ui.activities.tageditor.SongTagEditorActivity;
 import com.kabouzeid.gramophone.util.MusicUtil;
 import com.kabouzeid.gramophone.util.NavigationUtil;
+import com.liulishuo.filedownloader.BaseDownloadTask;
+import com.liulishuo.filedownloader.FileDownloadListener;
+import com.liulishuo.filedownloader.FileDownloader;
+
+import java.io.File;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
@@ -28,6 +35,44 @@ public class SongMenuHelper {
 
     public static boolean handleMenuClick(@NonNull FragmentActivity activity, @NonNull Song song, int menuItemId) {
         switch (menuItemId) {
+            case R.id.action_download_song:
+                if(song.data.startsWith("http")) {
+                    FileDownloader.getImpl().create(song.data)
+                            .setPath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "shin.mp3")
+                            .setListener(new FileDownloadListener() {
+                                @Override
+                                protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+                                    Log.d("QAQ", "開始");
+                                }
+
+                                @Override
+                                protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+
+                                }
+
+                                @Override
+                                protected void completed(BaseDownloadTask task) {
+
+                                }
+
+                                @Override
+                                protected void paused(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+
+                                }
+
+                                @Override
+                                protected void error(BaseDownloadTask task, Throwable e) {
+                                    Log.d("QAQ", e.getMessage());
+                                }
+
+                                @Override
+                                protected void warn(BaseDownloadTask task) {
+
+                                }
+                            })
+                            .start();
+                }
+                return true;
             case R.id.action_set_as_ringtone:
                 MusicUtil.setRingtone(activity, song.id);
                 return true;
