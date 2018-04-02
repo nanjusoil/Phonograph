@@ -1,6 +1,9 @@
 package com.kabouzeid.gramophone.helper.menu;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.media.MediaScannerConnection;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +19,7 @@ import com.kabouzeid.gramophone.dialogs.DeleteSongsDialog;
 import com.kabouzeid.gramophone.dialogs.SongDetailDialog;
 import com.kabouzeid.gramophone.helper.MusicPlayerRemote;
 import com.kabouzeid.gramophone.interfaces.PaletteColorHolder;
+import com.kabouzeid.gramophone.misc.UpdateToastMediaScannerCompletionListener;
 import com.kabouzeid.gramophone.model.Song;
 import com.kabouzeid.gramophone.ui.activities.tageditor.AbsTagEditorActivity;
 import com.kabouzeid.gramophone.ui.activities.tageditor.SongTagEditorActivity;
@@ -37,12 +41,13 @@ public class SongMenuHelper {
         switch (menuItemId) {
             case R.id.action_download_song:
                 if(song.data.startsWith("http")) {
+                    String url = song.data;
+                    String fileName = url.substring( url.lastIndexOf('/')+1, url.length() );
                     FileDownloader.getImpl().create(song.data)
-                            .setPath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "shin.mp3")
+                            .setPath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + fileName)
                             .setListener(new FileDownloadListener() {
                                 @Override
                                 protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-                                    Log.d("QAQ", "開始");
                                 }
 
                                 @Override
@@ -52,7 +57,9 @@ public class SongMenuHelper {
 
                                 @Override
                                 protected void completed(BaseDownloadTask task) {
-
+                                    Context context = activity.getApplicationContext();
+                                    String[] toBeScanned = {Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + fileName};
+                                    MediaScannerConnection.scanFile(context, toBeScanned, null, context instanceof Activity ? new UpdateToastMediaScannerCompletionListener((Activity) context, toBeScanned) : null);
                                 }
 
                                 @Override
@@ -62,7 +69,6 @@ public class SongMenuHelper {
 
                                 @Override
                                 protected void error(BaseDownloadTask task, Throwable e) {
-                                    Log.d("QAQ", e.getMessage());
                                 }
 
                                 @Override
@@ -71,6 +77,7 @@ public class SongMenuHelper {
                                 }
                             })
                             .start();
+
                 }
                 return true;
             case R.id.action_set_as_ringtone:
