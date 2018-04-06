@@ -87,6 +87,9 @@ ext {
 }
 
 dependencies {
+    compile 'com.liulishuo.filedownloader:library:1.7.2'
+    compile 'com.squareup.okhttp3:okhttp:3.10.0'
+    compile 'com.google.android.gms:play-services-ads:12.0.1'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:support-compat:$supportLibVersion"
     implementation "com.android.support:support-core-utils:$supportLibVersion"

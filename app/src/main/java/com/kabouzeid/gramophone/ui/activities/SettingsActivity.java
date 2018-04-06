@@ -35,6 +35,8 @@ import com.kabouzeid.gramophone.preferences.LibraryPreference;
 import com.kabouzeid.gramophone.preferences.LibraryPreferenceDialog;
 import com.kabouzeid.gramophone.preferences.NowPlayingScreenPreference;
 import com.kabouzeid.gramophone.preferences.NowPlayingScreenPreferenceDialog;
+import com.kabouzeid.gramophone.preferences.ApiUrlPreference;
+import com.kabouzeid.gramophone.preferences.ApiUrlPreferenceDialog;
 import com.kabouzeid.gramophone.ui.activities.base.AbsBaseActivity;
 import com.kabouzeid.gramophone.util.NavigationUtil;
 import com.kabouzeid.gramophone.util.PreferenceUtil;
@@ -60,6 +62,7 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
         setStatusbarColorAuto();
         setNavigationbarColorAuto();
         setTaskDescriptionColorAuto();
+
 
         toolbar.setBackgroundColor(ThemeStore.primaryColor(this));
         setSupportActionBar(toolbar);
@@ -160,6 +163,7 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
             addPreferencesFromResource(R.xml.pref_audio);
             addPreferencesFromResource(R.xml.pref_playlists);
             addPreferencesFromResource(R.xml.pref_blacklist);
+            addPreferencesFromResource(R.xml.pref_remote_url);
         }
 
         @Nullable
@@ -169,7 +173,9 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
                 return NowPlayingScreenPreferenceDialog.newInstance();
             } else if (preference instanceof BlacklistPreference) {
                 return BlacklistPreferenceDialog.newInstance();
-            } else if (preference instanceof LibraryPreference) {
+            } else if (preference instanceof ApiUrlPreference) {
+                return ApiUrlPreferenceDialog.newInstance();
+            }else if (preference instanceof LibraryPreference) {
                 return LibraryPreferenceDialog.newInstance();
             }
             return super.onCreatePreferenceDialog(preference);

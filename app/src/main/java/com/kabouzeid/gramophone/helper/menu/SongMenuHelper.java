@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.kabouzeid.gramophone.R;
 import com.kabouzeid.gramophone.dialogs.AddToPlaylistDialog;
@@ -42,6 +43,7 @@ public class SongMenuHelper {
             case R.id.action_download_song:
                 if(song.data.startsWith("http")) {
                     String url = song.data;
+
                     String fileName = url.substring( url.lastIndexOf('/')+1, url.length() );
                     FileDownloader.getImpl().create(song.data)
                             .setPath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + fileName)
@@ -52,7 +54,6 @@ public class SongMenuHelper {
 
                                 @Override
                                 protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-
                                 }
 
                                 @Override

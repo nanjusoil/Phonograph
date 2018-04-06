@@ -12,6 +12,10 @@
             android:id="@+id/nav_folders"
             android:icon="@drawable/ic_folder_white_24dp"
             android:title="@string/folders" />
+        <item
+            android:id="@+id/nav_remote_home"
+            android:icon="@drawable/ic_folder_white_24dp"
+            android:title="@string/action_remote_home" />
     </group>
 
     <group
