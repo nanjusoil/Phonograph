@@ -8,6 +8,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.kabouzeid.gramophone.R;
 import com.kabouzeid.gramophone.adapter.song.ShuffleButtonSongAdapter;
 import com.kabouzeid.gramophone.adapter.song.SongAdapter;
@@ -17,7 +18,12 @@ import com.kabouzeid.gramophone.misc.WrappedAsyncTaskLoader;
 import com.kabouzeid.gramophone.model.Song;
 import com.kabouzeid.gramophone.util.PreferenceUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
@@ -134,10 +140,33 @@ public class SongsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFrag
         public AsyncSongLoader(Context context) {
             super(context);
         }
+        OkHttpClient client = new OkHttpClient();
+
+        public String get(String url) throws IOException {
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        }
 
         @Override
         public ArrayList<Song> loadInBackground() {
-            ArrayList<Song> SongArrayList = SongLoader.getAllSongs(getContext());
+            ArrayList<Song> SongArrayList = new ArrayList<Song>();// = SongLoader.getAllSongs(getContext());
+            //SongArrayList.add(new Song(12 , "幹大事",1,1996,123,"http://139.162.98.238/data/3583987_001FelRr1ttGpW.mp3",123,123,"123",123,"QQ"));
+            try {
+                Gson gson = new Gson();
+                String json = get(PreferenceUtil.getInstance(getContext()).getRemoteAPIUrl() + "search?song=幹大事");
+                Log.v("QAQ" , json);
+                Song[] musicArray = gson.fromJson(json, Song[].class);
+                for(Song music : musicArray){
+                    SongArrayList.add(music);
+                }
+            } catch (IOException e) {
+                Log.v("QAQ" , "error");
+                e.printStackTrace();
+            }
             //Log.v("QAQ" , SongArrayList.toString());
             return SongArrayList;
         }
