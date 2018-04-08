@@ -221,6 +221,7 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
 
     @Override
     public void onUpdateProgressViews(int progress, int total) {
+        //這裡可以更改lyrics
         if (!isLyricsLayoutBound()) return;
 
         if (!isLyricsLayoutVisible()) {
