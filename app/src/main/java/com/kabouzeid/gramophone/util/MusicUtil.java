@@ -45,6 +45,7 @@ public class MusicUtil {
     public static final String TAG = MusicUtil.class.getSimpleName();
 
     public static Uri getMediaStoreAlbumCoverUri(int albumId) {
+        //更改cover
         final Uri sArtworkUri = Uri
                 .parse("content://media/external/audio/albumart");
 
