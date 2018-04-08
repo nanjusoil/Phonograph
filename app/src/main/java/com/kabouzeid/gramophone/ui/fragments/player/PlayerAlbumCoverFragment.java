@@ -1,8 +1,11 @@
 package com.kabouzeid.gramophone.ui.fragments.player;
 
 import android.animation.Animator;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,11 +17,15 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.kabouzeid.gramophone.R;
 import com.kabouzeid.gramophone.adapter.AlbumCoverPagerAdapter;
 import com.kabouzeid.gramophone.helper.MusicPlayerRemote;
 import com.kabouzeid.gramophone.helper.MusicProgressViewUpdateHelper;
+import com.kabouzeid.gramophone.interfaces.LoaderIds;
 import com.kabouzeid.gramophone.misc.SimpleAnimatorListener;
+import com.kabouzeid.gramophone.misc.WrappedAsyncTaskLoader;
+import com.kabouzeid.gramophone.model.Song;
 import com.kabouzeid.gramophone.model.lyrics.AbsSynchronizedLyrics;
 import com.kabouzeid.gramophone.model.lyrics.Lyrics;
 import com.kabouzeid.gramophone.ui.fragments.AbsMusicServiceFragment;
@@ -28,11 +35,19 @@ import com.kabouzeid.gramophone.util.ViewUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+import android.support.v4.app.LoaderManager;
+
+import java.io.IOException;
+
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
-public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements ViewPager.OnPageChangeListener, MusicProgressViewUpdateHelper.Callback {
+public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements ViewPager.OnPageChangeListener, MusicProgressViewUpdateHelper.Callback,  LoaderManager.LoaderCallbacks<Integer> {
     public static final String TAG = PlayerAlbumCoverFragment.class.getSimpleName();
 
     public static final int VISIBILITY_ANIM_DURATION = 300;
@@ -56,6 +71,7 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
 
     private Lyrics lyrics;
     private MusicProgressViewUpdateHelper progressViewUpdateHelper;
+    private static final int LOADER_ID = LoaderIds.PLAYER_ALBUM_COVER_FRAGMENT;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,6 +104,8 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
         });
         progressViewUpdateHelper = new MusicProgressViewUpdateHelper(this, 500, 1000);
         progressViewUpdateHelper.start();
+        getLoaderManager().initLoader(LOADER_ID, null, this);
+
     }
 
     @Override
@@ -221,7 +239,6 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
 
     @Override
     public void onUpdateProgressViews(int progress, int total) {
-        //這裡可以更改lyrics
         if (!isLyricsLayoutBound()) return;
 
         if (!isLyricsLayoutVisible()) {
@@ -258,11 +275,54 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
         }
     }
 
+    @Override
+    public Loader<Integer> onCreateLoader(int id, Bundle args) {
+        return new AsyncGenreLoader(getContext());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Integer> loader, Integer data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Integer> loader) {
+
+    }
+
     public interface Callbacks {
         void onColorChanged(int color);
 
         void onFavoriteToggled();
 
         void onToolbarToggled();
+    }
+
+    private static class AsyncGenreLoader extends WrappedAsyncTaskLoader<Integer> {
+        OkHttpClient client = new OkHttpClient();
+
+        public AsyncGenreLoader(Context context) {
+            super(context);
+        }
+        public String get(String url) throws IOException {
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        }
+        @Override
+        public Integer loadInBackground() {
+
+            try {
+                Gson gson = new Gson();
+                String json = get(PreferenceUtil.getInstance(getContext()).getRemoteAPIUrl() + "search?song=死了都要愛");
+                Log.v("QAQ" , "get Integer");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return new Integer(1);
+        }
     }
 }
