@@ -1,6 +1,5 @@
 package com.kabouzeid.gramophone.ui.activities;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,14 +11,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.kabouzeid.appthemehelper.ThemeStore;
 import com.kabouzeid.gramophone.R;
 import com.kabouzeid.gramophone.adapter.SearchAdapter;
@@ -28,22 +25,16 @@ import com.kabouzeid.gramophone.loader.AlbumLoader;
 import com.kabouzeid.gramophone.loader.ArtistLoader;
 import com.kabouzeid.gramophone.loader.SongLoader;
 import com.kabouzeid.gramophone.misc.WrappedAsyncTaskLoader;
-import com.kabouzeid.gramophone.model.Song;
 import com.kabouzeid.gramophone.ui.activities.base.AbsMusicServiceActivity;
-import com.kabouzeid.gramophone.util.PreferenceUtil;
 import com.kabouzeid.gramophone.util.Util;
 import com.liulishuo.filedownloader.FileDownloader;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class SearchActivity extends AbsMusicServiceActivity implements SearchView.OnQueryTextListener, LoaderManager.LoaderCallbacks<List<Object>> {
     public static final String TAG = SearchActivity.class.getSimpleName();
@@ -61,9 +52,6 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
 
     private SearchAdapter adapter;
     private String query;
-    ProgressDialog progress;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,13 +86,8 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
             query = savedInstanceState.getString(QUERY);
         }
 
-        if( PreferenceUtil.getInstance(this).getRemoteAPIUrl() == ""){
-            Toast.makeText(this , R.string.empty_remote_api_url , Toast.LENGTH_LONG);
-            onBackPressed();
-        }
-
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
-        progress = new ProgressDialog(this);
+        FileDownloader.setupOnApplicationOnCreate(getApplication());
     }
 
     @Override
@@ -133,7 +116,6 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
         searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setQueryHint(getString(R.string.search_hint));
         searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setSubmitButtonEnabled(true);
 
         MenuItemCompat.expandActionView(searchItem);
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
@@ -176,17 +158,13 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        search(query);
         hideSoftKeyboard();
-        progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
-        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-        progress.show();
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        search(newText);
         return false;
     }
 
@@ -204,7 +182,6 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
 
     @Override
     public void onLoadFinished(Loader<List<Object>> loader, List<Object> data) {
-        progress.dismiss();
         adapter.swapDataSet(data);
     }
 
@@ -215,47 +192,22 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
 
     private static class AsyncSearchResultLoader extends WrappedAsyncTaskLoader<List<Object>> {
         private final String query;
-        OkHttpClient client = new OkHttpClient();
-
 
         public AsyncSearchResultLoader(Context context, String query) {
             super(context);
             this.query = query;
         }
 
-
-        public String get(String url) throws IOException {
-            Request request = new Request.Builder()
-                    .url(url)
-                    .build();
-
-            Response response = client.newCall(request).execute();
-            return response.body().string();
-        }
-
         @Override
         public List<Object> loadInBackground() {
-
             List<Object> results = new ArrayList<>();
             if (!TextUtils.isEmpty(query)) {
                 List songs = SongLoader.getSongs(getContext(), query);
-                FileDownloader.setup(getContext());
-
-                try {
-                    Gson gson = new Gson();
-                    String json = get(PreferenceUtil.getInstance(getContext()).getRemoteAPIUrl() + "search?song=" +query);
-                    Song[] musicArray = gson.fromJson(json, Song[].class);
-                    for(Song music : musicArray){
-                        songs.add(music);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
                 if (!songs.isEmpty()) {
                     results.add(getContext().getResources().getString(R.string.songs));
                     results.addAll(songs);
                 }
+
                 List artists = ArtistLoader.getArtists(getContext(), query);
                 if (!artists.isEmpty()) {
                     results.add(getContext().getResources().getString(R.string.artists));
@@ -271,5 +223,4 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
             return results;
         }
     }
-
 }

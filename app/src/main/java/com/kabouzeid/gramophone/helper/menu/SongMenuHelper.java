@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import com.kabouzeid.gramophone.R;
 import com.kabouzeid.gramophone.dialogs.AddToPlaylistDialog;
@@ -40,16 +39,16 @@ public class SongMenuHelper {
 
     public static boolean handleMenuClick(@NonNull FragmentActivity activity, @NonNull Song song, int menuItemId) {
         switch (menuItemId) {
-            case R.id.action_download_song:
+            case R.id.action_download:
                 if(song.data.startsWith("http")) {
                     String url = song.data;
-
                     String fileName = url.substring( url.lastIndexOf('/')+1, url.length() );
-                    FileDownloader.getImpl().create(song.data)
+                    FileDownloader.getImpl().create(url)
                             .setPath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + fileName)
                             .setListener(new FileDownloadListener() {
                                 @Override
                                 protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+                                    Log.d("QAQ" , "SongMenuHelper pending");
                                 }
 
                                 @Override
@@ -60,6 +59,7 @@ public class SongMenuHelper {
                                 protected void completed(BaseDownloadTask task) {
                                     Context context = activity.getApplicationContext();
                                     String[] toBeScanned = {Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + fileName};
+                                    Log.d("QAQ" , "SongMenuHelper " + toBeScanned[0]);
                                     MediaScannerConnection.scanFile(context, toBeScanned, null, context instanceof Activity ? new UpdateToastMediaScannerCompletionListener((Activity) context, toBeScanned) : null);
                                 }
 
@@ -70,6 +70,7 @@ public class SongMenuHelper {
 
                                 @Override
                                 protected void error(BaseDownloadTask task, Throwable e) {
+                                    Log.d("QAQ" , "SongMenuHelper error");
                                 }
 
                                 @Override
@@ -81,6 +82,7 @@ public class SongMenuHelper {
 
                 }
                 return true;
+
             case R.id.action_set_as_ringtone:
                 MusicUtil.setRingtone(activity, song.id);
                 return true;
