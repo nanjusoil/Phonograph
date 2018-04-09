@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_action_download"
+        android:id="@+id/action_download"
         android:title="@string/action_action_download"
         app:showAsAction="never" />
     <item

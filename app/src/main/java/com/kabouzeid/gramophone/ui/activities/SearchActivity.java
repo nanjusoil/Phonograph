@@ -27,6 +27,7 @@ import com.kabouzeid.gramophone.loader.SongLoader;
 import com.kabouzeid.gramophone.misc.WrappedAsyncTaskLoader;
 import com.kabouzeid.gramophone.ui.activities.base.AbsMusicServiceActivity;
 import com.kabouzeid.gramophone.util.Util;
+import com.liulishuo.filedownloader.FileDownloader;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,6 +87,7 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
         }
 
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+        FileDownloader.setupOnApplicationOnCreate(getApplication());
     }
 
     @Override

@@ -1,9 +1,14 @@
 package com.kabouzeid.gramophone.helper.menu;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.media.MediaScannerConnection;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
@@ -14,11 +19,17 @@ import com.kabouzeid.gramophone.dialogs.DeleteSongsDialog;
 import com.kabouzeid.gramophone.dialogs.SongDetailDialog;
 import com.kabouzeid.gramophone.helper.MusicPlayerRemote;
 import com.kabouzeid.gramophone.interfaces.PaletteColorHolder;
+import com.kabouzeid.gramophone.misc.UpdateToastMediaScannerCompletionListener;
 import com.kabouzeid.gramophone.model.Song;
 import com.kabouzeid.gramophone.ui.activities.tageditor.AbsTagEditorActivity;
 import com.kabouzeid.gramophone.ui.activities.tageditor.SongTagEditorActivity;
 import com.kabouzeid.gramophone.util.MusicUtil;
 import com.kabouzeid.gramophone.util.NavigationUtil;
+import com.liulishuo.filedownloader.BaseDownloadTask;
+import com.liulishuo.filedownloader.FileDownloadListener;
+import com.liulishuo.filedownloader.FileDownloader;
+
+import java.io.File;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
@@ -28,6 +39,50 @@ public class SongMenuHelper {
 
     public static boolean handleMenuClick(@NonNull FragmentActivity activity, @NonNull Song song, int menuItemId) {
         switch (menuItemId) {
+            case R.id.action_download:
+                if(song.data.startsWith("http")) {
+                    String url = song.data;
+                    String fileName = url.substring( url.lastIndexOf('/')+1, url.length() );
+                    FileDownloader.getImpl().create(url)
+                            .setPath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + fileName)
+                            .setListener(new FileDownloadListener() {
+                                @Override
+                                protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+                                    Log.d("QAQ" , "SongMenuHelper pending");
+                                }
+
+                                @Override
+                                protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+                                }
+
+                                @Override
+                                protected void completed(BaseDownloadTask task) {
+                                    Context context = activity.getApplicationContext();
+                                    String[] toBeScanned = {Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + fileName};
+                                    Log.d("QAQ" , "SongMenuHelper " + toBeScanned[0]);
+                                    MediaScannerConnection.scanFile(context, toBeScanned, null, context instanceof Activity ? new UpdateToastMediaScannerCompletionListener((Activity) context, toBeScanned) : null);
+                                }
+
+                                @Override
+                                protected void paused(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+
+                                }
+
+                                @Override
+                                protected void error(BaseDownloadTask task, Throwable e) {
+                                    Log.d("QAQ" , "SongMenuHelper error");
+                                }
+
+                                @Override
+                                protected void warn(BaseDownloadTask task) {
+
+                                }
+                            })
+                            .start();
+
+                }
+                return true;
+
             case R.id.action_set_as_ringtone:
                 MusicUtil.setRingtone(activity, song.id);
                 return true;
