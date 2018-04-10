@@ -33,7 +33,7 @@ public class ApiUrlPreferenceDialog extends DialogFragment {
         apiUrlText.setText(PreferenceUtil.getInstance(getContext()).getRemoteAPIUrl());
         apiAccesstokenText.setText(PreferenceUtil.getInstance(getContext()).getRemoteAPIAccessToken());
         builder.setView(view)
-                .setPositiveButton("Sign in",
+                .setPositiveButton(R.string.login,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
@@ -43,7 +43,7 @@ public class ApiUrlPreferenceDialog extends DialogFragment {
                                         .getText().toString());
 
                             }
-                        }).setNegativeButton("Cancel", null);
+                        }).setNegativeButton(R.string.cancel, null);
         return builder.create();
 
 
