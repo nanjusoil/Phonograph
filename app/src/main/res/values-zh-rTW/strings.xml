@@ -292,4 +292,5 @@
     <string name="remote_api">遠端媒體庫</string>
     <string name="input_api_url">輸入網址</string>
     <string name="input_api_accesstoken">輸入認證碼</string>
+    <string name="cancel">取消</string>
 </resources>
