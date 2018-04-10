@@ -1,11 +1,11 @@
 <android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEPreferenceCategory android:title="@string/remote_api_url">
+    <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEPreferenceCategory android:title="@string/remote_api">
 
         <com.kabouzeid.gramophone.preferences.ApiUrlPreference
-            android:key="whitelist"
-            android:summary="@string/pref_summary_remote_api_url"
-            android:title="@string/remote_api_url" />
+            android:key="remote_url"
+            android:summary="@string/pref_remote_url"
+            android:title="@string/remote_api" />
 
     </com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEPreferenceCategory>
 

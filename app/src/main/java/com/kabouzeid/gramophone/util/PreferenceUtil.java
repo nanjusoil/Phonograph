@@ -84,6 +84,7 @@ public final class PreferenceUtil {
 
     public static final String REMOTE_API_URL = "remote_api_url";
 
+    public static final String REMOTE_API_ACCESSTOKEN = "remote_api_accesstoken";
 
     private static PreferenceUtil sInstance;
 
@@ -485,4 +486,13 @@ public final class PreferenceUtil {
         editor.apply();
     }
 
+    public final String getRemoteAPIAccessToken() {
+        return mPreferences.getString(REMOTE_API_ACCESSTOKEN, "");
+    }
+
+    public void setRemoteAPIAccessToken(String url) {
+        final SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putString(REMOTE_API_ACCESSTOKEN, url);
+        editor.apply();
+    }
 }

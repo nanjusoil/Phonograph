@@ -29,6 +29,8 @@ import com.kabouzeid.gramophone.App;
 import com.kabouzeid.gramophone.R;
 import com.kabouzeid.gramophone.appshortcuts.DynamicShortcutManager;
 import com.kabouzeid.gramophone.misc.NonProAllowedColors;
+import com.kabouzeid.gramophone.preferences.ApiUrlPreference;
+import com.kabouzeid.gramophone.preferences.ApiUrlPreferenceDialog;
 import com.kabouzeid.gramophone.preferences.BlacklistPreference;
 import com.kabouzeid.gramophone.preferences.BlacklistPreferenceDialog;
 import com.kabouzeid.gramophone.preferences.LibraryPreference;
@@ -177,6 +179,8 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
                 return ApiUrlPreferenceDialog.newInstance();
             }else if (preference instanceof LibraryPreference) {
                 return LibraryPreferenceDialog.newInstance();
+            } else if (preference instanceof ApiUrlPreference) {
+                return ApiUrlPreferenceDialog.newInstance();
             }
             return super.onCreatePreferenceDialog(preference);
         }
