@@ -1,6 +1,7 @@
 package com.kabouzeid.gramophone.ui.activities;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -18,12 +19,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.ads.MobileAds;
 import com.kabouzeid.appthemehelper.ThemeStore;
 import com.kabouzeid.appthemehelper.util.ATHUtil;
 import com.kabouzeid.appthemehelper.util.NavigationViewUtil;
@@ -80,8 +81,6 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
 
-
-
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             Util.setStatusBarTranslucent(getWindow());
             drawerLayout.setFitsSystemWindows(false);
@@ -129,6 +128,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                 navigationView.setCheckedItem(R.id.nav_remote_home);
                 setCurrentFragment(RemoteHomeFragment.newInstance());
                 break;
+
         }
     }
 
@@ -198,6 +198,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                 case R.id.nav_remote_home:
                     new Handler().postDelayed(() -> setMusicChooser(REMOTE_HOME), 200);
                     break;
+
             }
             return true;
         });

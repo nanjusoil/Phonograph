@@ -6,28 +6,18 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 
-import com.google.gson.Gson;
 import com.kabouzeid.gramophone.R;
 import com.kabouzeid.gramophone.adapter.PlaylistAdapter;
 import com.kabouzeid.gramophone.interfaces.LoaderIds;
 import com.kabouzeid.gramophone.loader.PlaylistLoader;
 import com.kabouzeid.gramophone.misc.WrappedAsyncTaskLoader;
 import com.kabouzeid.gramophone.model.Playlist;
-import com.kabouzeid.gramophone.model.Song;
 import com.kabouzeid.gramophone.model.smartplaylist.HistoryPlaylist;
 import com.kabouzeid.gramophone.model.smartplaylist.LastAddedPlaylist;
 import com.kabouzeid.gramophone.model.smartplaylist.MyTopTracksPlaylist;
-import com.kabouzeid.gramophone.model.smartplaylist.RemoteHomePlaylist;
-import com.kabouzeid.gramophone.util.PreferenceUtil;
 
-import java.io.IOException;
 import java.util.ArrayList;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
@@ -86,33 +76,15 @@ public class PlaylistsFragment extends AbsLibraryPagerRecyclerViewFragment<Playl
         public AsyncPlaylistLoader(Context context) {
             super(context);
         }
-        OkHttpClient client = new OkHttpClient();
 
-
-        public String get(String url) throws IOException {
-            Request request = new Request.Builder()
-                    .url(url)
-                    .build();
-
-            Response response = client.newCall(request).execute();
-            return response.body().string();
-        }
-
-        private ArrayList<Playlist> getAllPlaylists(Context context) {
+        private static ArrayList<Playlist> getAllPlaylists(Context context) {
             ArrayList<Playlist> playlists = new ArrayList<>();
 
-            try {
-                Gson gson = new Gson();
-                String json = get(PreferenceUtil.getInstance(context).getRemoteAPIUrl() + "search?song=幹大事");
-                Song[] musicArray = gson.fromJson(json, Song[].class);
-                RemoteHomePlaylist rhpl = new RemoteHomePlaylist(context);
-                playlists.add(rhpl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            playlists.add(new LastAddedPlaylist(context));
+            playlists.add(new HistoryPlaylist(context));
+            playlists.add(new MyTopTracksPlaylist(context));
 
-
-
+            playlists.addAll(PlaylistLoader.getAllPlaylists(context));
 
             return playlists;
         }
