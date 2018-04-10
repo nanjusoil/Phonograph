@@ -43,6 +43,7 @@ import com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity;
 import com.kabouzeid.gramophone.ui.activities.intro.AppIntroActivity;
 import com.kabouzeid.gramophone.ui.fragments.mainactivity.folders.FoldersFragment;
 import com.kabouzeid.gramophone.ui.fragments.mainactivity.library.LibraryFragment;
+import com.kabouzeid.gramophone.ui.fragments.mainactivity.remotehome.RemoteHomeFragment;
 import com.kabouzeid.gramophone.util.PreferenceUtil;
 import com.kabouzeid.gramophone.util.Util;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -60,6 +61,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
 
     private static final int LIBRARY = 0;
     private static final int FOLDERS = 1;
+    private static final int REMOTE_HOME = 2;
 
     @BindView(R.id.navigation_view)
     NavigationView navigationView;
@@ -122,6 +124,11 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                 navigationView.setCheckedItem(R.id.nav_folders);
                 setCurrentFragment(FoldersFragment.newInstance(this));
                 break;
+            case REMOTE_HOME:
+                navigationView.setCheckedItem(R.id.nav_remote_home);
+                setCurrentFragment(RemoteHomeFragment.newInstance());
+                break;
+
         }
     }
 
@@ -188,6 +195,10 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                 case R.id.nav_about:
                     new Handler().postDelayed(() -> startActivity(new Intent(MainActivity.this, AboutActivity.class)), 200);
                     break;
+                case R.id.nav_remote_home:
+                    new Handler().postDelayed(() -> setMusicChooser(REMOTE_HOME), 200);
+                    break;
+
             }
             return true;
         });
