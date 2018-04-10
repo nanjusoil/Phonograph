@@ -82,6 +82,10 @@ public final class PreferenceUtil {
 
     public static final String LIBRARY_CATEGORIES = "library_categories";
 
+    public static final String REMOTE_API_URL = "remote_api_url";
+
+    public static final String REMOTE_API_ACCESSTOKEN = "remote_api_accesstoken";
+
     private static PreferenceUtil sInstance;
 
     private final SharedPreferences mPreferences;
@@ -470,5 +474,25 @@ public final class PreferenceUtil {
         defaultCategoryInfos.add(new CategoryInfo(CategoryInfo.Category.GENRES, true));
         defaultCategoryInfos.add(new CategoryInfo(CategoryInfo.Category.PLAYLISTS, true));
         return defaultCategoryInfos;
+    }
+
+    public final String getRemoteAPIUrl() {
+        return mPreferences.getString(REMOTE_API_URL, "");
+    }
+
+    public void setRemoteAPIUrl(String url) {
+        final SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putString(REMOTE_API_URL, url);
+        editor.apply();
+    }
+
+    public final String getRemoteAPIAccessToken() {
+        return mPreferences.getString(REMOTE_API_ACCESSTOKEN, "");
+    }
+
+    public void setRemoteAPIAccessToken(String url) {
+        final SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putString(REMOTE_API_ACCESSTOKEN, url);
+        editor.apply();
     }
 }
