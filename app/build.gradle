@@ -132,6 +132,7 @@ dependencies {
     }
     implementation 'com.liulishuo.filedownloader:library:1.7.2'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.victor:lib:1.0.4'
     testImplementation 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }

@@ -16,8 +16,11 @@ import com.kabouzeid.gramophone.loader.SongLoader;
 import com.kabouzeid.gramophone.misc.WrappedAsyncTaskLoader;
 import com.kabouzeid.gramophone.model.Song;
 import com.kabouzeid.gramophone.util.PreferenceUtil;
+import com.victor.loading.rotate.RotateLoading;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
@@ -27,10 +30,13 @@ public class SongsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFrag
     public static final String TAG = SongsFragment.class.getSimpleName();
 
     private static final int LOADER_ID = LoaderIds.SONGS_FRAGMENT;
+    @BindView(R.id.rotateloading)
+    RotateLoading roateLoading;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        roateLoading.start();
         getLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
@@ -122,6 +128,7 @@ public class SongsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFrag
 
     @Override
     public void onLoadFinished(Loader<ArrayList<Song>> loader, ArrayList<Song> data) {
+        roateLoading.stop();
         getAdapter().swapDataSet(data);
     }
 
