@@ -54,9 +54,14 @@ import com.kabouzeid.gramophone.util.ViewUtil;
 import com.kabouzeid.gramophone.views.WidthFitSquareLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.io.IOException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class CardPlayerFragment extends AbsPlayerFragment implements PlayerAlbumCoverFragment.Callbacks, SlidingUpPanelLayout.PanelSlideListener {
     public static final String TAG = CardPlayerFragment.class.getSimpleName();
@@ -306,6 +311,16 @@ public class CardPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
         if (updateLyricsAsyncTask != null) updateLyricsAsyncTask.cancel(false);
         final Song song = MusicPlayerRemote.getCurrentSong();
         updateLyricsAsyncTask = new AsyncTask<Void, Void, Lyrics>() {
+            OkHttpClient client = new OkHttpClient();
+            public String get(String url) throws IOException {
+                Request request = new Request.Builder()
+                        .url(url)
+                        .build();
+
+                Response response = client.newCall(request).execute();
+                return response.body().string();
+            }
+
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
@@ -318,6 +333,12 @@ public class CardPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
             protected Lyrics doInBackground(Void... params) {
                 String data = MusicUtil.getLyrics(song);
                 if (TextUtils.isEmpty(data)) {
+                    try{
+                        String json = get("http://139.162.98.238:5000/lyrics");
+                        return Lyrics.parse(song, json);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     return null;
                 }
                 return Lyrics.parse(song, data);
