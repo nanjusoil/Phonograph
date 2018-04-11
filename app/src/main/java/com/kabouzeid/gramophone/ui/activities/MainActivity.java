@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -125,7 +126,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                 setCurrentFragment(FoldersFragment.newInstance(this));
                 break;
             case REMOTE_HOME:
-                if(PreferenceUtil.getInstance(getApplication()).getRemoteAPIUrl() != "") {
+                if( URLUtil.isValidUrl(PreferenceUtil.getInstance(getApplication()).getRemoteAPIUrl())) {
                     navigationView.setCheckedItem(R.id.nav_remote_home);
                     setCurrentFragment(RemoteHomeFragment.newInstance());
                 }else{
