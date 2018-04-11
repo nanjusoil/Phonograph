@@ -125,8 +125,14 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                 setCurrentFragment(FoldersFragment.newInstance(this));
                 break;
             case REMOTE_HOME:
-                navigationView.setCheckedItem(R.id.nav_remote_home);
-                setCurrentFragment(RemoteHomeFragment.newInstance());
+                if(PreferenceUtil.getInstance(getApplication()).getRemoteAPIUrl() != "") {
+                    navigationView.setCheckedItem(R.id.nav_remote_home);
+                    setCurrentFragment(RemoteHomeFragment.newInstance());
+                }else{
+                    Toast.makeText(this, R.string.remote_not_set_hint, Toast.LENGTH_LONG).show();
+                    navigationView.setCheckedItem(R.id.nav_library);
+                    setCurrentFragment(LibraryFragment.newInstance());
+                }
                 break;
 
         }

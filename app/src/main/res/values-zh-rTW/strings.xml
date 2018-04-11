@@ -293,4 +293,5 @@
     <string name="input_api_url">輸入網址</string>
     <string name="input_api_accesstoken">輸入認證碼</string>
     <string name="cancel">取消</string>
+    <string name="remote_not_set_hint">遠端媒體庫網址未設定，請去設定</string>
 </resources>
