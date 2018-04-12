@@ -49,6 +49,7 @@ import com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity;
 import com.kabouzeid.gramophone.ui.fragments.player.AbsPlayerFragment;
 import com.kabouzeid.gramophone.ui.fragments.player.PlayerAlbumCoverFragment;
 import com.kabouzeid.gramophone.util.MusicUtil;
+import com.kabouzeid.gramophone.util.PreferenceUtil;
 import com.kabouzeid.gramophone.util.Util;
 import com.kabouzeid.gramophone.util.ViewUtil;
 import com.kabouzeid.gramophone.views.WidthFitSquareLayout;
@@ -334,7 +335,7 @@ public class CardPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
                 String data = MusicUtil.getLyrics(song);
                 if (TextUtils.isEmpty(data)) {
                     try{
-                        String json = get("http://139.162.98.238:5000/lyrics");
+                        String json = get(PreferenceUtil.getInstance(getContext()).getRemoteAPIUrl() + "lyrics");
                         return Lyrics.parse(song, json);
                     } catch (IOException e) {
                         e.printStackTrace();

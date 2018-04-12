@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 
@@ -38,10 +39,20 @@ public class SongsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFrag
     @BindView(R.id.rotateloading)
     RotateLoading roateLoading;
 
+    @BindView(R.id.layout_swipe_refresh)
+    SwipeRefreshLayout layoutSwipeRefresh;
+
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         roateLoading.start();
+        layoutSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getLoaderManager().restartLoader(LOADER_ID, null, SongsFragment.this);
+            }
+        });
         getLoaderManager().initLoader(LOADER_ID, null, this);
 
     }
@@ -135,6 +146,7 @@ public class SongsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFrag
     @Override
     public void onLoadFinished(Loader<ArrayList<Song>> loader, ArrayList<Song> data) {
         roateLoading.stop();
+        layoutSwipeRefresh.setRefreshing(false);
         getAdapter().swapDataSet(data);
     }
 
@@ -160,8 +172,6 @@ public class SongsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFrag
 
         @Override
         public ArrayList<Song> loadInBackground() {
-            //ArrayList<Song> SongArrayList = SongLoader.getAllSongs(getContext());
-            //Log.v("QAQ" , SongArrayList.toString());
             ArrayList<Song> SongArrayList = new ArrayList<Song>();
             try {
                 Gson gson = new Gson();
