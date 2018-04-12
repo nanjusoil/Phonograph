@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.kabouzeid.appthemehelper.ThemeStore;
 import com.kabouzeid.gramophone.R;
 import com.kabouzeid.gramophone.adapter.SearchAdapter;
@@ -24,16 +26,23 @@ import com.kabouzeid.gramophone.loader.AlbumLoader;
 import com.kabouzeid.gramophone.loader.ArtistLoader;
 import com.kabouzeid.gramophone.loader.SongLoader;
 import com.kabouzeid.gramophone.misc.WrappedAsyncTaskLoader;
+import com.kabouzeid.gramophone.model.Song;
 import com.kabouzeid.gramophone.ui.activities.base.AbsMusicServiceActivity;
+import com.kabouzeid.gramophone.util.PreferenceUtil;
 import com.kabouzeid.gramophone.util.Util;
 import com.liulishuo.filedownloader.FileDownloader;
+import com.victor.loading.rotate.RotateLoading;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class RemoteSearchActivity extends AbsMusicServiceActivity implements SearchView.OnQueryTextListener, LoaderManager.LoaderCallbacks<List<Object>> {
     public static final String TAG = RemoteSearchActivity.class.getSimpleName();
@@ -46,6 +55,9 @@ public class RemoteSearchActivity extends AbsMusicServiceActivity implements Sea
     Toolbar toolbar;
     @BindView(android.R.id.empty)
     TextView empty;
+    @BindView(R.id.rotateloading)
+    RotateLoading rotateLoading;
+
 
     SearchView searchView;
 
@@ -104,7 +116,7 @@ public class RemoteSearchActivity extends AbsMusicServiceActivity implements Sea
         toolbar.setBackgroundColor(ThemeStore.primaryColor(this));
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -145,6 +157,8 @@ public class RemoteSearchActivity extends AbsMusicServiceActivity implements Sea
     }
 
     private void search(@NonNull String query) {
+        rotateLoading.start();
+        empty.setVisibility(View.GONE);
         this.query = query;
         getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
     }
@@ -182,15 +196,28 @@ public class RemoteSearchActivity extends AbsMusicServiceActivity implements Sea
     @Override
     public void onLoadFinished(Loader<List<Object>> loader, List<Object> data) {
         adapter.swapDataSet(data);
+        rotateLoading.stop();
     }
 
     @Override
     public void onLoaderReset(Loader<List<Object>> loader) {
         adapter.swapDataSet(Collections.emptyList());
+        rotateLoading.stop();
     }
 
     private static class AsyncSearchResultLoader extends WrappedAsyncTaskLoader<List<Object>> {
         private final String query;
+        OkHttpClient client = new OkHttpClient();
+
+        public String get(String url) throws IOException {
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        }
+
 
         public AsyncSearchResultLoader(Context context, String query) {
             super(context);
@@ -206,6 +233,24 @@ public class RemoteSearchActivity extends AbsMusicServiceActivity implements Sea
                     results.add(getContext().getResources().getString(R.string.songs));
                     results.addAll(songs);
                 }
+                ArrayList<Song> SongArrayList = new ArrayList<Song>();
+                try {
+                    Gson gson = new Gson();
+                    String json = get(PreferenceUtil.getInstance(getContext()).getRemoteAPIUrl() + "search?query=" + query);
+                    Song[] musicArray = gson.fromJson(json, Song[].class);
+                    for(Song music : musicArray){
+                        SongArrayList.add(music);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JsonParseException e) {
+                    e.printStackTrace();
+                }
+                if (!SongArrayList.isEmpty()) {
+                    results.addAll(SongArrayList);
+                }
+
+
 
                 List artists = ArtistLoader.getArtists(getContext(), query);
                 if (!artists.isEmpty()) {
