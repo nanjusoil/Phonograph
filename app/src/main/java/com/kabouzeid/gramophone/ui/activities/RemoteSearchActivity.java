@@ -35,8 +35,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SearchActivity extends AbsMusicServiceActivity implements SearchView.OnQueryTextListener, LoaderManager.LoaderCallbacks<List<Object>> {
-    public static final String TAG = SearchActivity.class.getSimpleName();
+public class RemoteSearchActivity extends AbsMusicServiceActivity implements SearchView.OnQueryTextListener, LoaderManager.LoaderCallbacks<List<Object>> {
+    public static final String TAG = RemoteSearchActivity.class.getSimpleName();
     public static final String QUERY = "query";
     private static final int LOADER_ID = LoaderIds.SEARCH_ACTIVITY;
 
@@ -131,7 +131,7 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
         });
 
         searchView.setQuery(query, false);
-        searchView.post(() -> searchView.setOnQueryTextListener(SearchActivity.this));
+        searchView.post(() -> searchView.setOnQueryTextListener(RemoteSearchActivity.this));
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -168,7 +168,7 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
     }
 
     private void hideSoftKeyboard() {
-        Util.hideSoftKeyboard(SearchActivity.this);
+        Util.hideSoftKeyboard(RemoteSearchActivity.this);
         if (searchView != null) {
             searchView.clearFocus();
         }

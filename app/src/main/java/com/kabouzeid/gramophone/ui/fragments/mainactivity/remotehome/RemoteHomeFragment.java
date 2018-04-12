@@ -34,6 +34,7 @@ import com.kabouzeid.gramophone.helper.MusicPlayerRemote;
 import com.kabouzeid.gramophone.interfaces.CabHolder;
 import com.kabouzeid.gramophone.loader.SongLoader;
 import com.kabouzeid.gramophone.ui.activities.MainActivity;
+import com.kabouzeid.gramophone.ui.activities.RemoteSearchActivity;
 import com.kabouzeid.gramophone.ui.activities.SearchActivity;
 import com.kabouzeid.gramophone.ui.fragments.mainactivity.AbsMainActivityFragment;
 import com.kabouzeid.gramophone.ui.fragments.mainactivity.remotehome.pager.AbsLibraryPagerRecyclerViewCustomGridSizeFragment;
@@ -242,7 +243,7 @@ public class RemoteHomeFragment extends AbsMainActivityFragment implements CabHo
                 CreatePlaylistDialog.create().show(getChildFragmentManager(), "CREATE_PLAYLIST");
                 return true;
             case R.id.action_search:
-                startActivity(new Intent(getActivity(), SearchActivity.class));
+                startActivity(new Intent(getActivity(), RemoteSearchActivity.class));
                 return true;
         }
         return super.onOptionsItemSelected(item);

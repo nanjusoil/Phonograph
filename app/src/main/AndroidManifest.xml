@@ -104,6 +104,7 @@
             android:name=".ui.activities.tageditor.AlbumTagEditorActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.activities.SearchActivity" />
+        <activity android:name=".ui.activities.RemoteSearchActivity" />
         <activity
             android:name=".ui.activities.SettingsActivity"
             android:label="@string/action_settings" />
