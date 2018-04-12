@@ -44,6 +44,7 @@ import com.kabouzeid.gramophone.lastfm.rest.model.LastFmArtist;
 import com.kabouzeid.gramophone.loader.ArtistLoader;
 import com.kabouzeid.gramophone.misc.SimpleObservableScrollViewCallbacks;
 import com.kabouzeid.gramophone.misc.WrappedAsyncTaskLoader;
+import com.kabouzeid.gramophone.model.Album;
 import com.kabouzeid.gramophone.model.Artist;
 import com.kabouzeid.gramophone.model.Song;
 import com.kabouzeid.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity;
@@ -480,6 +481,15 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
 
         @Override
         public Artist loadInBackground() {
+            /*這裡取得artist資料
+            ArrayList<Artist> artists = new ArrayList<Artist>();
+            ArrayList<Album> albums = new ArrayList<Album>();
+            ArrayList<Song> songs = new ArrayList<Song>();
+            songs.add(new Song(12, "asdasd", 12, 1996, 1231, "", 0, 0, "xd", 0 , "xd"));
+            albums.add(new Album(songs));
+            artists.add(new Artist(albums));
+            return ArtistLoader.getArtist(getContext(), 1);
+            return new Artist(albums);*/
             return ArtistLoader.getArtist(getContext(), artistId);
         }
     }

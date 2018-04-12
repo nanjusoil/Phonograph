@@ -12,7 +12,9 @@ import com.kabouzeid.gramophone.adapter.artist.ArtistAdapter;
 import com.kabouzeid.gramophone.interfaces.LoaderIds;
 import com.kabouzeid.gramophone.loader.ArtistLoader;
 import com.kabouzeid.gramophone.misc.WrappedAsyncTaskLoader;
+import com.kabouzeid.gramophone.model.Album;
 import com.kabouzeid.gramophone.model.Artist;
+import com.kabouzeid.gramophone.model.Song;
 import com.kabouzeid.gramophone.util.PreferenceUtil;
 
 import java.util.ArrayList;
@@ -128,6 +130,13 @@ public class ArtistsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFr
 
         @Override
         public ArrayList<Artist> loadInBackground() {
+            /*ArrayList<Artist> artists = new ArrayList<Artist>();
+            ArrayList<Album> albums = new ArrayList<Album>();
+            ArrayList<Song> songs = new ArrayList<Song>();
+            songs.add(new Song(12, "asdasd", 12, 1996, 1231, "", 0, 0, "xd", 0 , "xd"));
+            albums.add(new Album(songs));
+            artists.add(new Artist(albums));
+            return artists;*/
             return ArtistLoader.getAllArtists(getContext());
         }
     }
