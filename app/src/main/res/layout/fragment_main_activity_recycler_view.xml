@@ -4,14 +4,19 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
 
-    <com.victor.loading.rotate.RotateLoading
-        android:id="@+id/rotateloading"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        app:loading_width="5dp"
-        app:loading_color="#ffffff"
-        android:layout_centerInParent="true"/>
+        <com.victor.loading.rotate.RotateLoading
+            android:id="@+id/rotateloading"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:loading_width="5dp"
+            app:loading_color="#000000"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
 
     <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
         android:id="@+id/recycler_view"

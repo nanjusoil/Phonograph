@@ -43,6 +43,7 @@ public class SongsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFrag
         super.onActivityCreated(savedInstanceState);
         roateLoading.start();
         getLoaderManager().initLoader(LOADER_ID, null, this);
+
     }
 
     @NonNull
