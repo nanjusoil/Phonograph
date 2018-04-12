@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -127,6 +128,7 @@ public class RemoteSearchActivity extends AbsMusicServiceActivity implements Sea
         searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setQueryHint(getString(R.string.search_hint));
         searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setSubmitButtonEnabled(true);
 
         MenuItemCompat.expandActionView(searchItem);
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
@@ -172,12 +174,12 @@ public class RemoteSearchActivity extends AbsMusicServiceActivity implements Sea
     @Override
     public boolean onQueryTextSubmit(String query) {
         hideSoftKeyboard();
+        search(query);
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        search(newText);
         return false;
     }
 
@@ -228,30 +230,25 @@ public class RemoteSearchActivity extends AbsMusicServiceActivity implements Sea
         public List<Object> loadInBackground() {
             List<Object> results = new ArrayList<>();
             if (!TextUtils.isEmpty(query)) {
-                List songs = SongLoader.getSongs(getContext(), query);
-                if (!songs.isEmpty()) {
-                    results.add(getContext().getResources().getString(R.string.songs));
-                    results.addAll(songs);
-                }
-                ArrayList<Song> SongArrayList = new ArrayList<Song>();
+                ArrayList<Song> songs = new ArrayList<Song>();
                 try {
                     Gson gson = new Gson();
-                    String json = get(PreferenceUtil.getInstance(getContext()).getRemoteAPIUrl() + "search?query=" + query);
+                    String json = get(PreferenceUtil.getInstance(getContext()).getRemoteAPIUrl() + "search?song=" + query);
                     Song[] musicArray = gson.fromJson(json, Song[].class);
                     for(Song music : musicArray){
-                        SongArrayList.add(music);
+                        songs.add(music);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JsonParseException e) {
                     e.printStackTrace();
                 }
-                if (!SongArrayList.isEmpty()) {
-                    results.addAll(SongArrayList);
+                if (!songs.isEmpty()) {
+                    results.addAll(songs);
                 }
 
 
-
+                /*
                 List artists = ArtistLoader.getArtists(getContext(), query);
                 if (!artists.isEmpty()) {
                     results.add(getContext().getResources().getString(R.string.artists));
@@ -263,6 +260,7 @@ public class RemoteSearchActivity extends AbsMusicServiceActivity implements Sea
                     results.add(getContext().getResources().getString(R.string.albums));
                     results.addAll(albums);
                 }
+                */
             }
             return results;
         }
