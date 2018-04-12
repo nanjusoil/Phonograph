@@ -73,6 +73,10 @@ public class GenresFragment extends AbsLibraryPagerRecyclerViewFragment<GenreAda
 
         @Override
         public ArrayList<Genre> loadInBackground() {
+            /*Genre genre = new Genre(1, "種類", 30);
+            ArrayList<Genre> genres= new ArrayList<Genre>();
+            genres.add(genre);
+            return genres;*/
             return GenreLoader.getAllGenres(getContext());
         }
     }
