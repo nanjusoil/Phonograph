@@ -20,6 +20,8 @@ import com.kabouzeid.gramophone.model.Song;
 import com.kabouzeid.gramophone.util.MusicUtil;
 import com.kabouzeid.gramophone.util.PreferenceUtil;
 
+import java.net.URL;
+
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
@@ -111,7 +113,7 @@ public class SongGlideRequest {
 
     public static DrawableTypeRequest createBaseRequest(RequestManager requestManager, Song song, boolean ignoreMediaStore) {
         if (ignoreMediaStore) {
-            return requestManager.load(new AudioFileCover(song.data));
+            return requestManager.load("http://139.162.98.238/pic/" + song.albumId + ".jpg");
         } else {
             return requestManager.loadFromMediaStore(MusicUtil.getMediaStoreAlbumCoverUri(song.albumId));
         }
