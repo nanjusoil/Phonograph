@@ -10,6 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.kabouzeid.gramophone.R;
 import com.kabouzeid.gramophone.adapter.song.ShuffleButtonSongAdapter;
 import com.kabouzeid.gramophone.adapter.song.SongAdapter;
@@ -175,12 +176,14 @@ public class SongsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFrag
             ArrayList<Song> SongArrayList = new ArrayList<Song>();
             try {
                 Gson gson = new Gson();
-                String json = get(PreferenceUtil.getInstance(getContext()).getRemoteAPIUrl() + "search?song=死了都要愛");
+                String json = get(PreferenceUtil.getInstance(getContext()).getRemoteAPIUrl() + "popularsongs");
                 Song[] musicArray = gson.fromJson(json, Song[].class);
                 for(Song music : musicArray){
                     SongArrayList.add(music);
                 }
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JsonParseException e) {
                 e.printStackTrace();
             }
 
