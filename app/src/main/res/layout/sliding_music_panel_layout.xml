@@ -30,7 +30,14 @@
             class="com.stonedog.gramophone.ui.fragments.player.MiniPlayerFragment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/mini_player_height" />
-
+        <!--
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|top"
+            android:text="The Awesome Sliding Up Panel"
+            android:textSize="16sp" />
+        -->
     </FrameLayout>
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>
