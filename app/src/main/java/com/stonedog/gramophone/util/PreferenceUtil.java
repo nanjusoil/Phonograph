@@ -473,10 +473,10 @@ public final class PreferenceUtil {
     public ArrayList<CategoryInfo> getDefaultLibraryCategoryInfos() {
         ArrayList<CategoryInfo> defaultCategoryInfos = new ArrayList<>(5);
         defaultCategoryInfos.add(new CategoryInfo(CategoryInfo.Category.SONGS, true));
-        defaultCategoryInfos.add(new CategoryInfo(CategoryInfo.Category.ALBUMS, true));
-        defaultCategoryInfos.add(new CategoryInfo(CategoryInfo.Category.ARTISTS, true));
-        defaultCategoryInfos.add(new CategoryInfo(CategoryInfo.Category.GENRES, true));
-        defaultCategoryInfos.add(new CategoryInfo(CategoryInfo.Category.PLAYLISTS, true));
+        defaultCategoryInfos.add(new CategoryInfo(CategoryInfo.Category.ALBUMS, false));
+        defaultCategoryInfos.add(new CategoryInfo(CategoryInfo.Category.ARTISTS, false));
+        defaultCategoryInfos.add(new CategoryInfo(CategoryInfo.Category.GENRES, false));
+        defaultCategoryInfos.add(new CategoryInfo(CategoryInfo.Category.PLAYLISTS, false));
         return defaultCategoryInfos;
     }
 

@@ -347,6 +347,8 @@ public class CardPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
                         return Lyrics.parse(song, json);
                     } catch (IOException e) {
                         e.printStackTrace();
+                    } catch (IllegalArgumentException e){
+                        e.printStackTrace();
                     }
                     return null;
                 }

@@ -325,6 +325,9 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
                 Log.v("QAQ" , "get Integer");
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (IllegalArgumentException e){
+                e.printStackTrace();
+                return new Integer(1);
             }
             return new Integer(1);
         }
