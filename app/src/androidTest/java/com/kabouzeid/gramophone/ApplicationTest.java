@@ -1,4 +1,4 @@
-package com.kabouzeid.gramophone;
+package com.stonedog.gramophone;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

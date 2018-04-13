@@ -2,7 +2,7 @@
 
     <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEPreferenceCategory android:title="@string/remote_api">
 
-        <com.kabouzeid.gramophone.preferences.ApiUrlPreference
+        <com.stonedog.gramophone.preferences.ApiUrlPreference
             android:key="remote_url"
             android:summary="@string/pref_remote_url"
             android:title="@string/remote_api" />
