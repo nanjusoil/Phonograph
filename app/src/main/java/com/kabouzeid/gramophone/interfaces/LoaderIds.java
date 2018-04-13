@@ -15,4 +15,5 @@ public interface LoaderIds {
     int PLAYLISTS_FRAGMENT = 9;
     int GENRES_FRAGMENT = 10;
     int SONGS_FRAGMENT = 11;
+    int PLAYER_ALBUM_COVER_FRAGMENT = 12;
 }
