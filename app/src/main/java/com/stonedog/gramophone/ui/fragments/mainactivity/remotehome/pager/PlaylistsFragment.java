@@ -9,8 +9,10 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.stonedog.gramophone.R;
 import com.stonedog.gramophone.adapter.PlaylistAdapter;
+import com.stonedog.gramophone.adapter.RemotePlaylistAdapter;
 import com.stonedog.gramophone.interfaces.LoaderIds;
 import com.stonedog.gramophone.loader.PlaylistLoader;
+import com.stonedog.gramophone.loader.RemotePlaylistLoader;
 import com.stonedog.gramophone.misc.WrappedAsyncTaskLoader;
 import com.stonedog.gramophone.model.Playlist;
 import com.stonedog.gramophone.model.smartplaylist.HistoryPlaylist;
@@ -25,7 +27,7 @@ import java.util.ArrayList;
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
-public class PlaylistsFragment extends AbsLibraryPagerRecyclerViewFragment<PlaylistAdapter, LinearLayoutManager> implements LoaderManager.LoaderCallbacks<ArrayList<Playlist>> {
+public class PlaylistsFragment extends AbsLibraryPagerRecyclerViewFragment<RemotePlaylistAdapter, LinearLayoutManager> implements LoaderManager.LoaderCallbacks<ArrayList<Playlist>> {
 
     public static final String TAG = PlaylistsFragment.class.getSimpleName();
 
@@ -45,9 +47,9 @@ public class PlaylistsFragment extends AbsLibraryPagerRecyclerViewFragment<Playl
 
     @NonNull
     @Override
-    protected PlaylistAdapter createAdapter() {
+    protected RemotePlaylistAdapter createAdapter() {
         ArrayList<Playlist> dataSet = getAdapter() == null ? new ArrayList<Playlist>() : getAdapter().getDataSet();
-        return new PlaylistAdapter(getLibraryFragment().getMainActivity(), dataSet, R.layout.item_list_single_row, getLibraryFragment());
+        return new RemotePlaylistAdapter(getLibraryFragment().getMainActivity(), dataSet, R.layout.item_list_single_row, getLibraryFragment());
     }
 
     @Override
@@ -87,7 +89,7 @@ public class PlaylistsFragment extends AbsLibraryPagerRecyclerViewFragment<Playl
             playlists.add(new HistoryPlaylist(context));
             playlists.add(new MyTopTracksPlaylist(context));
 
-            playlists.addAll(PlaylistLoader.getAllPlaylists(context));
+            playlists.addAll(RemotePlaylistLoader.getAllPlaylists(context));
 
             return playlists;
         }

@@ -25,6 +25,7 @@ import com.stonedog.gramophone.ui.activities.AlbumDetailActivity;
 import com.stonedog.gramophone.ui.activities.ArtistDetailActivity;
 import com.stonedog.gramophone.ui.activities.GenreDetailActivity;
 import com.stonedog.gramophone.ui.activities.PlaylistDetailActivity;
+import com.stonedog.gramophone.ui.activities.RemotePlaylistDetailActivity;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
@@ -57,6 +58,14 @@ public class NavigationUtil {
     public static void goToPlaylist(@NonNull final Activity activity, final Playlist playlist, @Nullable Pair... sharedElements) {
         final Intent intent = new Intent(activity, PlaylistDetailActivity.class);
         intent.putExtra(PlaylistDetailActivity.EXTRA_PLAYLIST, playlist);
+
+        activity.startActivity(intent);
+    }
+
+
+    public static void goToRemotePlaylist(@NonNull final Activity activity, final Playlist playlist, @Nullable Pair... sharedElements) {
+        final Intent intent = new Intent(activity, PlaylistDetailActivity.class);
+        intent.putExtra(RemotePlaylistDetailActivity.EXTRA_PLAYLIST, playlist);
 
         activity.startActivity(intent);
     }
