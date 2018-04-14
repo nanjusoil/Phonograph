@@ -85,9 +85,9 @@ public class PlaylistsFragment extends AbsLibraryPagerRecyclerViewFragment<Remot
         private static ArrayList<Playlist> getAllPlaylists(Context context) {
             ArrayList<Playlist> playlists = new ArrayList<>();
 
-            playlists.add(new LastAddedPlaylist(context));
-            playlists.add(new HistoryPlaylist(context));
-            playlists.add(new MyTopTracksPlaylist(context));
+            //playlists.add(new LastAddedPlaylist(context));
+            //playlists.add(new HistoryPlaylist(context));
+            //playlists.add(new MyTopTracksPlaylist(context));
 
             playlists.addAll(RemotePlaylistLoader.getAllPlaylists(context));
 

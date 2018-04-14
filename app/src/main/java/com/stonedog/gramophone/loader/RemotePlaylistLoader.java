@@ -7,18 +7,49 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.stonedog.gramophone.model.Playlist;
+import com.stonedog.gramophone.util.PreferenceUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class RemotePlaylistLoader {
 
+    static OkHttpClient client = new OkHttpClient();
+
+    public static String get(String url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        return response.body().string();
+    }
+
     @NonNull
     public static ArrayList<Playlist> getAllPlaylists(@NonNull final Context context) {
-        ArrayList<Playlist> playlists= new ArrayList<Playlist>();
-        playlists.add(new Playlist(1232, "GG"));
+        ArrayList<Playlist> playlists = new ArrayList<Playlist>();
+        try {
+            Gson gson = new Gson();
+            String json = get(PreferenceUtil.getInstance(context).getRemoteAPIUrl() + "popularplaylists");
+            Playlist[] playlistArray = gson.fromJson(json, Playlist[].class);
+            for (Playlist playlist : playlistArray) {
+                playlists.add(playlist);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+            return null;
+        }
         return playlists;
-        //return getAllPlaylists(makePlaylistCursor(context, null, null));
     }
 
     @NonNull
