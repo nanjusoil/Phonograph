@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.afollestad.materialcab.MaterialCab;
+import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
@@ -39,13 +41,18 @@ import com.stonedog.gramophone.model.Song;
 import com.stonedog.gramophone.ui.activities.base.AbsSlidingMusicPanelActivity;
 import com.stonedog.gramophone.util.PhonographColorUtil;
 import com.stonedog.gramophone.util.PlaylistsUtil;
+import com.stonedog.gramophone.util.PreferenceUtil;
 import com.stonedog.gramophone.util.ViewUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class RemotePlaylistDetailActivity extends AbsSlidingMusicPanelActivity implements CabHolder, LoaderManager.LoaderCallbacks<ArrayList<Song>> {
 
@@ -260,6 +267,17 @@ public class RemotePlaylistDetailActivity extends AbsSlidingMusicPanelActivity i
 
     private static class AsyncPlaylistSongLoader extends WrappedAsyncTaskLoader<ArrayList<Song>> {
         private final Playlist playlist;
+        OkHttpClient client = new OkHttpClient();
+
+        public String get(String url) throws IOException {
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        }
+
 
         public AsyncPlaylistSongLoader(Context context, Playlist playlist) {
             super(context);
@@ -271,8 +289,21 @@ public class RemotePlaylistDetailActivity extends AbsSlidingMusicPanelActivity i
             if (playlist instanceof AbsCustomPlaylist) {
                 return ((AbsCustomPlaylist) playlist).getSongs(getContext());
             } else {
-                //noinspection unchecked
-                return (ArrayList<Song>) (List) PlaylistSongLoader.getPlaylistSongList(getContext(), playlist.id);
+                ArrayList<Song> SongArrayList = new ArrayList<Song>();
+                try {
+                    Gson gson = new Gson();
+                    String json = get(PreferenceUtil.getInstance(getContext()).getRemoteAPIUrl() + "popularsongs");
+                    Song[] musicArray = gson.fromJson(json, Song[].class);
+                    for(Song music : musicArray){
+                        SongArrayList.add(music);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JsonParseException e) {
+                    e.printStackTrace();
+                }
+
+                return SongArrayList;
             }
         }
     }
