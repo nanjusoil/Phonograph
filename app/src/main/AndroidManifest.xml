@@ -12,6 +12,9 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
 
     <application
         android:name=".App"
@@ -215,6 +218,12 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
         </provider>
+        <activity
+            android:name="com.vpadn.widget.VpadnActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|keyboard|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:theme="@android:style/Theme.Translucent"
+            android:hardwareAccelerated="true" >
+        </activity>
     </application>
 
 </manifest>

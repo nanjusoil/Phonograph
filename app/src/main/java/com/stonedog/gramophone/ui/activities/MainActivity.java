@@ -60,13 +60,17 @@ import com.stonedog.gramophone.service.MusicService;
 import com.stonedog.gramophone.ui.fragments.mainactivity.folders.FoldersFragment;
 import com.stonedog.gramophone.ui.fragments.mainactivity.library.LibraryFragment;
 import com.stonedog.gramophone.ui.fragments.mainactivity.remotehome.RemoteHomeFragment;
+import com.vpadn.ads.VpadnAd;
+import com.vpadn.ads.VpadnAdListener;
+import com.vpadn.ads.VpadnAdRequest;
+import com.vpadn.ads.VpadnInterstitialAd;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AbsSlidingMusicPanelActivity {
+public class MainActivity extends AbsSlidingMusicPanelActivity implements VpadnAdListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     public static final int APP_INTRO_REQUEST = 100;
@@ -75,6 +79,10 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
     private static final int LIBRARY = 0;
     private static final int FOLDERS = 1;
     private static final int REMOTE_HOME = 2;
+    private String interstitialBannerId = "8a80854b62adf5490162c35aa9833832";
+    private VpadnInterstitialAd interstitialAd;
+
+
 
     @BindView(R.id.navigation_view)
     NavigationView navigationView;
@@ -118,6 +126,15 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
         if (!checkShowIntro()) {
             checkShowChangelog();
         }
+
+        interstitialAd = new VpadnInterstitialAd(this, interstitialBannerId, "TW");
+        // 加入listener
+        interstitialAd.setAdListener(this);
+        // 建立廣告請求
+        VpadnAdRequest request = new VpadnAdRequest();
+        // 開始抓interstitial ad
+        interstitialAd.loadAd(request);
+
     }
 
     private void setMusicChooser(int key) {
@@ -400,6 +417,34 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public void onVpadnReceiveAd(VpadnAd vpadnAd) {
+        if ( interstitialAd.isReady()) {
+            interstitialAd.show();
+        }
+        Log.v("QAQ", "on Recieve");
+    }
+
+    @Override
+    public void onVpadnFailedToReceiveAd(VpadnAd vpadnAd, VpadnAdRequest.VpadnErrorCode vpadnErrorCode) {
+        Log.v("QAQ", "on Failed");
+    }
+
+    @Override
+    public void onVpadnPresentScreen(VpadnAd vpadnAd) {
+
+    }
+
+    @Override
+    public void onVpadnDismissScreen(VpadnAd vpadnAd) {
+
+    }
+
+    @Override
+    public void onVpadnLeaveApplication(VpadnAd vpadnAd) {
+
     }
 
     public interface MainActivityFragmentCallbacks {
