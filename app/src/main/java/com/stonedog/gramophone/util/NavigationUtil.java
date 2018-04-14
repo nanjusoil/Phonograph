@@ -64,7 +64,7 @@ public class NavigationUtil {
 
 
     public static void goToRemotePlaylist(@NonNull final Activity activity, final Playlist playlist, @Nullable Pair... sharedElements) {
-        final Intent intent = new Intent(activity, PlaylistDetailActivity.class);
+        final Intent intent = new Intent(activity, RemotePlaylistDetailActivity.class);
         intent.putExtra(RemotePlaylistDetailActivity.EXTRA_PLAYLIST, playlist);
 
         activity.startActivity(intent);
