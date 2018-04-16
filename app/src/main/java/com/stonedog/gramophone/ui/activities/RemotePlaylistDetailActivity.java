@@ -90,6 +90,7 @@ public class RemotePlaylistDetailActivity extends AbsSlidingMusicPanelActivity i
         setTaskDescriptionColorAuto();
 
         playlist = getIntent().getExtras().getParcelable(EXTRA_PLAYLIST);
+        Log.v("QAQ", Integer.toString(playlist.id));
 
         setUpRecyclerView();
 
@@ -106,7 +107,7 @@ public class RemotePlaylistDetailActivity extends AbsSlidingMusicPanelActivity i
     private void setUpRecyclerView() {
         ViewUtil.setUpFastScrollRecyclerViewColor(this, ((FastScrollRecyclerView) recyclerView), ThemeStore.accentColor(this));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        if (playlist instanceof AbsCustomPlaylist) {
+        if (true) {
             adapter = new PlaylistSongAdapter(this, new ArrayList<Song>(), R.layout.item_list, false, this);
             recyclerView.setAdapter(adapter);
         } else {
@@ -292,7 +293,7 @@ public class RemotePlaylistDetailActivity extends AbsSlidingMusicPanelActivity i
                 ArrayList<Song> SongArrayList = new ArrayList<Song>();
                 try {
                     Gson gson = new Gson();
-                    String json = get(PreferenceUtil.getInstance(getContext()).getRemoteAPIUrl() + "popularsongs");
+                    String json = get(PreferenceUtil.getInstance(getContext()).getRemoteAPIUrl() + "playlist?id=" + playlist.id);
                     Song[] musicArray = gson.fromJson(json, Song[].class);
                     for(Song music : musicArray){
                         SongArrayList.add(music);

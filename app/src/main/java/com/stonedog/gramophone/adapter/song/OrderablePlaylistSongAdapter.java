@@ -4,6 +4,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -46,8 +47,10 @@ public class OrderablePlaylistSongAdapter extends PlaylistSongAdapter implements
     @Override
     public long getItemId(int position) {
         position--;
+        long my_Id=  ((ArrayList<PlaylistSong>) (List) dataSet).get(position).idInPlayList;
+        Log.v("QAQ", "GAG" + Integer.toString((int) my_Id));
         if (position < 0) return -2;
-        return position;
+        return ((ArrayList<PlaylistSong>) (List) dataSet).get(position).idInPlayList; // important!
     }
 
     @Override

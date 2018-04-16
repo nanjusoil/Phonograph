@@ -6,6 +6,7 @@ import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -14,6 +15,7 @@ import com.stonedog.gramophone.util.PreferenceUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.function.LongFunction;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

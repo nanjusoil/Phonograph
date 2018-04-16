@@ -50,7 +50,6 @@ public class RemotePlaylistAdapter extends AbsMultiSelectAdapter<RemotePlaylistA
 
     public RemotePlaylistAdapter(AppCompatActivity activity, ArrayList<Playlist> dataSet, @LayoutRes int itemLayoutRes, @Nullable CabHolder cabHolder) {
         super(activity, cabHolder, R.menu.menu_playlists_selection);
-        Log.v("QAQ", "playlist created");
         this.activity = activity;
         this.dataSet = dataSet;
         this.itemLayoutRes = itemLayoutRes;
@@ -220,6 +219,7 @@ public class RemotePlaylistAdapter extends AbsMultiSelectAdapter<RemotePlaylistA
                 toggleChecked(getAdapterPosition());
             } else {
                 Playlist playlist = dataSet.get(getAdapterPosition());
+                Log.v("QAQ", "Position: " + playlist.id);
                 NavigationUtil.goToRemotePlaylist(activity, playlist);
             }
         }

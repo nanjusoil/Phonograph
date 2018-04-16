@@ -343,7 +343,7 @@ public class CardPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
                 String data = MusicUtil.getLyrics(song);
                 if (TextUtils.isEmpty(data)) {
                     try{
-                        String json = get(PreferenceUtil.getInstance(getContext()).getRemoteAPIUrl() + "lyrics");
+                        String json = get(PreferenceUtil.getInstance(getContext()).getRemoteAPIUrl() + "lyrics?id="+ song.id);
                         return Lyrics.parse(song, json);
                     } catch (IOException e) {
                         e.printStackTrace();
