@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.stonedog.gramophone.R;
@@ -24,6 +25,8 @@ import com.stonedog.gramophone.model.Playlist;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
@@ -33,10 +36,21 @@ public class PlaylistsFragment extends AbsLibraryPagerRecyclerViewFragment<Remot
 
     private static final int LOADER_ID = LoaderIds.PLAYLISTS_FRAGMENT;
 
+    @BindView(R.id.layout_swipe_refresh)
+    SwipeRefreshLayout layoutSwipeRefresh;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(LOADER_ID, null, this);
+        layoutSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getLoaderManager().restartLoader(LOADER_ID, null, PlaylistsFragment.this);
+            }
+        });
+        getLoaderManager().initLoader(LOADER_ID, null, this);
+
     }
 
     @NonNull
@@ -70,6 +84,7 @@ public class PlaylistsFragment extends AbsLibraryPagerRecyclerViewFragment<Remot
     @Override
     public void onLoadFinished(Loader<ArrayList<Playlist>> loader, ArrayList<Playlist> data) {
         getAdapter().swapDataSet(data);
+        layoutSwipeRefresh.setRefreshing(false);
     }
 
     @Override

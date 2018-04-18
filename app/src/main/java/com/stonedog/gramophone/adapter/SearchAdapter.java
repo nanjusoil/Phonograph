@@ -90,7 +90,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             case SONG:
                 final Song song = (Song) dataSet.get(position);
                 holder.title.setText(song.title);
-                holder.text.setText(song.albumName);
+                holder.text.setText(song.artistName + " - " + song.albumName);
                 break;
             default:
                 holder.title.setText(dataSet.get(position).toString());

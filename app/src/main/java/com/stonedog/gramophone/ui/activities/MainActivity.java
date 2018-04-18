@@ -1,7 +1,6 @@
 package com.stonedog.gramophone.ui.activities;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -19,7 +18,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowInsets;
 import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,29 +46,13 @@ import com.stonedog.gramophone.ui.fragments.mainactivity.remotehome.RemoteHomeFr
 import com.stonedog.gramophone.util.PreferenceUtil;
 import com.stonedog.gramophone.util.Util;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.stonedog.gramophone.App;
-import com.stonedog.gramophone.dialogs.ChangelogDialog;
-import com.stonedog.gramophone.helper.MusicPlayerRemote;
-import com.stonedog.gramophone.helper.SearchQueryHelper;
-import com.stonedog.gramophone.loader.AlbumLoader;
-import com.stonedog.gramophone.loader.ArtistLoader;
-import com.stonedog.gramophone.loader.PlaylistSongLoader;
-import com.stonedog.gramophone.model.Song;
-import com.stonedog.gramophone.service.MusicService;
-import com.stonedog.gramophone.ui.fragments.mainactivity.folders.FoldersFragment;
-import com.stonedog.gramophone.ui.fragments.mainactivity.library.LibraryFragment;
-import com.stonedog.gramophone.ui.fragments.mainactivity.remotehome.RemoteHomeFragment;
-import com.vpadn.ads.VpadnAd;
-import com.vpadn.ads.VpadnAdListener;
-import com.vpadn.ads.VpadnAdRequest;
-import com.vpadn.ads.VpadnInterstitialAd;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AbsSlidingMusicPanelActivity implements VpadnAdListener {
+public class MainActivity extends AbsSlidingMusicPanelActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     public static final int APP_INTRO_REQUEST = 100;
@@ -79,9 +61,6 @@ public class MainActivity extends AbsSlidingMusicPanelActivity implements VpadnA
     private static final int LIBRARY = 0;
     private static final int FOLDERS = 1;
     private static final int REMOTE_HOME = 2;
-    private String interstitialBannerId = "8a80854b62adf5490162c35aa9833832";
-    private VpadnInterstitialAd interstitialAd;
-
 
 
     @BindView(R.id.navigation_view)
@@ -127,13 +106,6 @@ public class MainActivity extends AbsSlidingMusicPanelActivity implements VpadnA
             checkShowChangelog();
         }
 
-        interstitialAd = new VpadnInterstitialAd(this, interstitialBannerId, "TW");
-        // 加入listener
-        interstitialAd.setAdListener(this);
-        // 建立廣告請求
-        VpadnAdRequest request = new VpadnAdRequest();
-        // 開始抓interstitial ad
-        interstitialAd.loadAd(request);
 
     }
 
@@ -417,34 +389,6 @@ public class MainActivity extends AbsSlidingMusicPanelActivity implements VpadnA
             e.printStackTrace();
         }
         return false;
-    }
-
-    @Override
-    public void onVpadnReceiveAd(VpadnAd vpadnAd) {
-        if ( interstitialAd.isReady()) {
-            interstitialAd.show();
-        }
-        Log.v("QAQ", "on Recieve");
-    }
-
-    @Override
-    public void onVpadnFailedToReceiveAd(VpadnAd vpadnAd, VpadnAdRequest.VpadnErrorCode vpadnErrorCode) {
-        Log.v("QAQ", "on Failed");
-    }
-
-    @Override
-    public void onVpadnPresentScreen(VpadnAd vpadnAd) {
-
-    }
-
-    @Override
-    public void onVpadnDismissScreen(VpadnAd vpadnAd) {
-
-    }
-
-    @Override
-    public void onVpadnLeaveApplication(VpadnAd vpadnAd) {
-
     }
 
     public interface MainActivityFragmentCallbacks {

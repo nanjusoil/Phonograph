@@ -51,8 +51,8 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         applicationId 'com.stonedog.gramophone'
-        versionCode 151
-        versionName '0.16.6'
+        versionCode 153
+        versionName '0.26.6'
     }
     buildTypes {
         release {
@@ -133,7 +133,6 @@ dependencies {
     implementation 'com.liulishuo.filedownloader:library:1.7.2'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.victor:lib:1.0.4'
-    implementation 'com.vpon:vpadnSDK:4.6.+'
     testImplementation 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }

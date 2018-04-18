@@ -15,13 +15,9 @@ import com.stonedog.gramophone.R;
 import com.stonedog.gramophone.adapter.song.ShuffleButtonSongAdapter;
 import com.stonedog.gramophone.adapter.song.SongAdapter;
 import com.stonedog.gramophone.interfaces.LoaderIds;
-import com.stonedog.gramophone.loader.SongLoader;
 import com.stonedog.gramophone.misc.WrappedAsyncTaskLoader;
 import com.stonedog.gramophone.model.Song;
 import com.stonedog.gramophone.util.PreferenceUtil;
-import com.stonedog.gramophone.adapter.song.ShuffleButtonSongAdapter;
-import com.stonedog.gramophone.adapter.song.SongAdapter;
-import com.stonedog.gramophone.model.Song;
 import com.victor.loading.rotate.RotateLoading;
 
 import java.io.IOException;

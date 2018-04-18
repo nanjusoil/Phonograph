@@ -42,11 +42,6 @@ import com.stonedog.gramophone.ui.fragments.mainactivity.remotehome.pager.Playli
 import com.stonedog.gramophone.util.PhonographColorUtil;
 import com.stonedog.gramophone.util.PreferenceUtil;
 import com.stonedog.gramophone.util.Util;
-import com.stonedog.gramophone.adapter.RemoteHomePagerAdapter;
-import com.stonedog.gramophone.dialogs.CreatePlaylistDialog;
-import com.stonedog.gramophone.helper.MusicPlayerRemote;
-import com.stonedog.gramophone.loader.SongLoader;
-import com.stonedog.gramophone.ui.fragments.mainactivity.AbsMainActivityFragment;
 
 
 import butterknife.BindView;

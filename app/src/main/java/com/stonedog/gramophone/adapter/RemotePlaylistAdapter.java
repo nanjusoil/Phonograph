@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 
+import com.bumptech.glide.Glide;
 import com.kabouzeid.appthemehelper.util.ATHUtil;
 import com.stonedog.gramophone.R;
 import com.stonedog.gramophone.adapter.base.AbsMultiSelectAdapter;
@@ -102,7 +103,7 @@ public class RemotePlaylistAdapter extends AbsMultiSelectAdapter<RemotePlaylistA
         }
 
         if (holder.image != null) {
-            holder.image.setImageResource(getIconRes(playlist));
+            Glide.with(activity).load("http://www.fnordware.com/superpng/pngtest16rgba.png").into(holder.image);
         }
     }
 
