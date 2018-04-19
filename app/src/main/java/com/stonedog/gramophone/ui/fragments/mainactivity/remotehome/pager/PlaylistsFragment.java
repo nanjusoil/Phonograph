@@ -78,7 +78,7 @@ public class PlaylistsFragment extends AbsLibraryPagerRecyclerViewFragment<Remot
         niceSpinner.addOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                
+
             }
         });
         return new RemotePlaylistAdapter(getLibraryFragment().getMainActivity(), dataSet, R.layout.item_list_single_row, getLibraryFragment());

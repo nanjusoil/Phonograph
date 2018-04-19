@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.stonedog.gramophone.R;
 import com.stonedog.gramophone.adapter.GenreAdapter;
+import com.stonedog.gramophone.adapter.RemoteGenreAdapter;
 import com.stonedog.gramophone.interfaces.LoaderIds;
 import com.stonedog.gramophone.loader.GenreLoader;
 import com.stonedog.gramophone.misc.WrappedAsyncTaskLoader;
@@ -20,7 +21,7 @@ import com.stonedog.gramophone.model.Genre;
 
 import java.util.ArrayList;
 
-public class GenresFragment extends AbsLibraryPagerRecyclerViewFragment<GenreAdapter, LinearLayoutManager> implements LoaderManager.LoaderCallbacks<ArrayList<Genre>> {
+public class GenresFragment extends AbsLibraryPagerRecyclerViewFragment<RemoteGenreAdapter, LinearLayoutManager> implements LoaderManager.LoaderCallbacks<ArrayList<Genre>> {
 
     public static final String TAG = GenresFragment.class.getSimpleName();
 
@@ -40,9 +41,9 @@ public class GenresFragment extends AbsLibraryPagerRecyclerViewFragment<GenreAda
 
     @NonNull
     @Override
-    protected GenreAdapter createAdapter() {
+    protected RemoteGenreAdapter createAdapter() {
         ArrayList<Genre> dataSet = getAdapter() == null ? new ArrayList<Genre>() : getAdapter().getDataSet();
-        return new GenreAdapter(getLibraryFragment().getMainActivity(), dataSet, R.layout.item_list_no_image);
+        return new RemoteGenreAdapter(getLibraryFragment().getMainActivity(), dataSet, R.layout.item_list_no_image);
     }
 
     @Override
@@ -77,11 +78,11 @@ public class GenresFragment extends AbsLibraryPagerRecyclerViewFragment<GenreAda
 
         @Override
         public ArrayList<Genre> loadInBackground() {
-            /*Genre genre = new Genre(1, "種類", 30);
+            Genre genre = new Genre(1, "種類", 30);
             ArrayList<Genre> genres= new ArrayList<Genre>();
             genres.add(genre);
-            return genres;*/
-            return GenreLoader.getAllGenres(getContext());
+            return genres;
+            //return GenreLoader.getAllGenres(getContext());
         }
     }
 }
