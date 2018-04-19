@@ -7,48 +7,29 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.View;
-import android.widget.AdapterView;
 
 import com.stonedog.gramophone.R;
-import com.stonedog.gramophone.adapter.PlaylistAdapter;
 import com.stonedog.gramophone.adapter.RemotePlaylistAdapter;
 import com.stonedog.gramophone.interfaces.LoaderIds;
-import com.stonedog.gramophone.loader.PlaylistLoader;
 import com.stonedog.gramophone.loader.RemotePlaylistLoader;
 import com.stonedog.gramophone.misc.WrappedAsyncTaskLoader;
 import com.stonedog.gramophone.model.Playlist;
-import com.stonedog.gramophone.model.smartplaylist.HistoryPlaylist;
-import com.stonedog.gramophone.model.smartplaylist.LastAddedPlaylist;
-import com.stonedog.gramophone.model.smartplaylist.MyTopTracksPlaylist;
-import com.stonedog.gramophone.adapter.PlaylistAdapter;
-import com.stonedog.gramophone.loader.PlaylistLoader;
-import com.stonedog.gramophone.model.Playlist;
-
-import org.angmarch.views.NiceSpinner;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 import butterknife.BindView;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
-public class PlaylistsFragment extends AbsLibraryPagerRecyclerViewFragment<RemotePlaylistAdapter, LinearLayoutManager> implements LoaderManager.LoaderCallbacks<ArrayList<Playlist>> {
+public class Playlists2Fragment extends AbsLibraryPagerRecyclerViewFragment<RemotePlaylistAdapter, LinearLayoutManager> implements LoaderManager.LoaderCallbacks<ArrayList<Playlist>> {
 
-    public static final String TAG = PlaylistsFragment.class.getSimpleName();
+    public static final String TAG = Playlists2Fragment.class.getSimpleName();
 
     private static final int LOADER_ID = LoaderIds.PLAYLISTS_FRAGMENT;
 
     @BindView(R.id.layout_swipe_refresh)
     SwipeRefreshLayout layoutSwipeRefresh;
-
-    @BindView(R.id.nice_spinner)
-    NiceSpinner niceSpinner;
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -57,9 +38,10 @@ public class PlaylistsFragment extends AbsLibraryPagerRecyclerViewFragment<Remot
         layoutSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getLoaderManager().restartLoader(LOADER_ID, null, PlaylistsFragment.this);
+                getLoaderManager().restartLoader(LOADER_ID, null, Playlists2Fragment.this);
             }
         });
+        getLoaderManager().initLoader(LOADER_ID, null, this);
 
     }
 
@@ -72,15 +54,7 @@ public class PlaylistsFragment extends AbsLibraryPagerRecyclerViewFragment<Remot
     @NonNull
     @Override
     protected RemotePlaylistAdapter createAdapter() {
-        List<String> dataset = new LinkedList<>(Arrays.asList("One", "Two", "Three", "Four", "Five"));
-        niceSpinner.attachDataSource(dataset);
         ArrayList<Playlist> dataSet = getAdapter() == null ? new ArrayList<Playlist>() : getAdapter().getDataSet();
-        niceSpinner.addOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                
-            }
-        });
         return new RemotePlaylistAdapter(getLibraryFragment().getMainActivity(), dataSet, R.layout.item_list_single_row, getLibraryFragment());
     }
 

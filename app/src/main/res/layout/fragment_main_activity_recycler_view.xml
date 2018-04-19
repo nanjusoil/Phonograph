@@ -4,20 +4,29 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
 
-        <RelativeLayout
+        <com.victor.loading.rotate.RotateLoading
+            android:id="@+id/rotateloading"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:loading_width="5dp"
+            app:loading_color="#000000"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <org.angmarch.views.NiceSpinner
+            android:id="@+id/nice_spinner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center">
-
-            <com.victor.loading.rotate.RotateLoading
-                android:id="@+id/rotateloading"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                app:loading_width="5dp"
-                app:loading_color="#000000"
-                android:layout_centerInParent="true"/>
-        </RelativeLayout>
+            app:textTint="@color/md_black_1000"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/layout_swipe_refresh"
@@ -43,5 +52,5 @@
             android:textColor="?android:textColorSecondary"
             android:textSize="@dimen/empty_text_size"
             android:visibility="gone" />
-
+    </LinearLayout>
 </FrameLayout>
