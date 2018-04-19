@@ -100,7 +100,7 @@ public class RemoteGenreAdapter extends RecyclerView.Adapter<RemoteGenreAdapter.
         @Override
         public void onClick(View view) {
             Genre genre = dataSet.get(getAdapterPosition());
-            NavigationUtil.goToGenre(activity, genre);
+            NavigationUtil.goToRemoteGenre(activity, genre);
         }
     }
 }

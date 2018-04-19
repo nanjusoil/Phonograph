@@ -7,19 +7,21 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.stonedog.gramophone.R;
-import com.stonedog.gramophone.adapter.GenreAdapter;
 import com.stonedog.gramophone.adapter.RemoteGenreAdapter;
 import com.stonedog.gramophone.interfaces.LoaderIds;
-import com.stonedog.gramophone.loader.GenreLoader;
 import com.stonedog.gramophone.misc.WrappedAsyncTaskLoader;
 import com.stonedog.gramophone.model.Genre;
-import com.stonedog.gramophone.adapter.GenreAdapter;
-import com.stonedog.gramophone.interfaces.LoaderIds;
-import com.stonedog.gramophone.loader.GenreLoader;
-import com.stonedog.gramophone.model.Genre;
 
+
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class GenresFragment extends AbsLibraryPagerRecyclerViewFragment<RemoteGenreAdapter, LinearLayoutManager> implements LoaderManager.LoaderCallbacks<ArrayList<Genre>> {
 
@@ -75,12 +77,32 @@ public class GenresFragment extends AbsLibraryPagerRecyclerViewFragment<RemoteGe
         public AsyncGenreLoader(Context context) {
             super(context);
         }
+        OkHttpClient client = new OkHttpClient();
+
+        public String get(String url) throws IOException {
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        }
 
         @Override
         public ArrayList<Genre> loadInBackground() {
-            Genre genre = new Genre(1, "種類", 30);
             ArrayList<Genre> genres= new ArrayList<Genre>();
-            genres.add(genre);
+            try {
+                Gson gson = new Gson();
+                //String json = get(PreferenceUtil.getInstance(getContext()).getRemoteAPIUrl() + "popularsongs");
+                String json = "[{'id':'1','name':'種類', 'songCount':'30'},{'id':'2','name':'種類', 'songCount':'30'}]";
+                Genre[] genreArray = gson.fromJson(json, Genre[].class);
+                for(Genre genre : genreArray){
+                    genres.add(genre);
+                }
+            } catch (JsonParseException e) {
+                e.printStackTrace();
+            }
+
             return genres;
             //return GenreLoader.getAllGenres(getContext());
         }

@@ -57,7 +57,7 @@ public class NavigationUtil {
     }
 
     public static void goToRemoteGenre(@NonNull final Activity activity, final Genre genre, @Nullable Pair... sharedElements) {
-        final Intent intent = new Intent(activity, GenreDetailActivity.class);
+        final Intent intent = new Intent(activity, RemoteGenreDetailActivity.class);
         intent.putExtra(RemoteGenreDetailActivity.EXTRA_GENRE, genre);
 
         activity.startActivity(intent);
