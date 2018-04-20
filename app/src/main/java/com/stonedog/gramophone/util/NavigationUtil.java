@@ -25,6 +25,7 @@ import com.stonedog.gramophone.ui.activities.AlbumDetailActivity;
 import com.stonedog.gramophone.ui.activities.ArtistDetailActivity;
 import com.stonedog.gramophone.ui.activities.GenreDetailActivity;
 import com.stonedog.gramophone.ui.activities.PlaylistDetailActivity;
+import com.stonedog.gramophone.ui.activities.RemoteAlbumDetailActivity;
 import com.stonedog.gramophone.ui.activities.RemoteGenreDetailActivity;
 import com.stonedog.gramophone.ui.activities.RemotePlaylistDetailActivity;
 
@@ -44,6 +45,14 @@ public class NavigationUtil {
     public static void goToAlbum(@NonNull final Activity activity, final int albumId, @Nullable Pair... sharedElements) {
         final Intent intent = new Intent(activity, AlbumDetailActivity.class);
         intent.putExtra(AlbumDetailActivity.EXTRA_ALBUM_ID, albumId);
+
+        //noinspection unchecked
+        activity.startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements).toBundle());
+    }
+
+    public static void goToRemoteAlbum(@NonNull final Activity activity, final int albumId, @Nullable Pair... sharedElements) {
+        final Intent intent = new Intent(activity, RemoteAlbumDetailActivity.class);
+        intent.putExtra(RemoteAlbumDetailActivity.EXTRA_ALBUM_ID, albumId);
 
         //noinspection unchecked
         activity.startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements).toBundle());

@@ -97,6 +97,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activities.AlbumDetailActivity" />
+        <activity android:name=".ui.activities.RemoteAlbumDetailActivity" />
         <activity android:name=".ui.activities.ArtistDetailActivity" />
         <activity android:name=".ui.activities.GenreDetailActivity" />
         <activity android:name=".ui.activities.RemoteGenreDetailActivity" />

@@ -11,21 +11,41 @@ import java.util.ArrayList;
  */
 public class Album implements Parcelable {
     public final ArrayList<Song> songs;
+    public final int remoteId;
+    public final String remoteName;
 
     public Album(ArrayList<Song> songs) {
         this.songs = songs;
+        this.remoteId = 0;
+        this.remoteName = "";
+
     }
 
     public Album() {
         this.songs = new ArrayList<>();
+        this.remoteId = 0;
+        this.remoteName = "";
     }
 
+    public Album(int id, String name) {
+        this.songs = new ArrayList<>();
+        this.remoteId = id;
+        this.remoteName = name;
+    }
     public int getId() {
-        return safeGetFirstSong().albumId;
+        if(this.remoteId == 0) {
+            return safeGetFirstSong().albumId;
+        }else{
+            return this.remoteId;
+        }
     }
 
     public String getTitle() {
-        return safeGetFirstSong().albumName;
+        if(this.remoteName.isEmpty()){
+            return safeGetFirstSong().albumName;
+        }else {
+            return this.remoteName;
+        }
     }
 
     public int getArtistId() {
@@ -88,6 +108,8 @@ public class Album implements Parcelable {
 
     protected Album(Parcel in) {
         this.songs = in.createTypedArrayList(Song.CREATOR);
+        this.remoteId = in.readInt();
+        this.remoteName = in.readString();
     }
 
     public static final Creator<Album> CREATOR = new Creator<Album>() {

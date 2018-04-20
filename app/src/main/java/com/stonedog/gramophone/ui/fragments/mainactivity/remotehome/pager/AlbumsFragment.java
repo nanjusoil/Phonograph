@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 
 import com.stonedog.gramophone.R;
 import com.stonedog.gramophone.adapter.album.AlbumAdapter;
+import com.stonedog.gramophone.adapter.album.RemoteAlbumAdapter;
 import com.stonedog.gramophone.interfaces.LoaderIds;
 import com.stonedog.gramophone.loader.AlbumLoader;
 import com.stonedog.gramophone.misc.WrappedAsyncTaskLoader;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
-public class AlbumsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFragment<AlbumAdapter, GridLayoutManager> implements LoaderManager.LoaderCallbacks<ArrayList<Album>> {
+public class AlbumsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFragment<RemoteAlbumAdapter, GridLayoutManager> implements LoaderManager.LoaderCallbacks<ArrayList<Album>> {
     public static final String TAG = AlbumsFragment.class.getSimpleName();
 
     private static final int LOADER_ID = LoaderIds.ALBUMS_FRAGMENT;
@@ -42,11 +43,11 @@ public class AlbumsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFra
 
     @NonNull
     @Override
-    protected AlbumAdapter createAdapter() {
+    protected RemoteAlbumAdapter createAdapter() {
         int itemLayoutRes = getItemLayoutRes();
         notifyLayoutResChanged(itemLayoutRes);
         ArrayList<Album> dataSet = getAdapter() == null ? new ArrayList<Album>() : getAdapter().getDataSet();
-        return new AlbumAdapter(
+        return new RemoteAlbumAdapter(
                 getLibraryFragment().getMainActivity(),
                 dataSet,
                 itemLayoutRes,
@@ -127,7 +128,10 @@ public class AlbumsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFra
 
         @Override
         public ArrayList<Album> loadInBackground() {
-            return AlbumLoader.getAllAlbums(getContext());
+            ArrayList<Album> album = new ArrayList<Album>();
+            album.add(new Album(1, "XDD"));
+            return album;
+            //return AlbumLoader.getAllAlbums(getContext());
         }
     }
 }
